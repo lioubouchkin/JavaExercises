@@ -1,0 +1,12 @@
+http://math.hws.edu/eck/cs124/javanotes3/c10/s3.html
+http://math.hws.edu/eck/cs124/javanotes3/c10/exercises.html
+
+A program that makes a list of all the words that occur in a specified file. 
+The user is asked to type in the name of the file. The list of words is written to another file, 
+which the user also specifies. A word here just means a sequence of letters. 
+The list of words will be output in alphabetical order, with no repetitions. 
+All the words will be converted into lower case, so that, for example, "The" and "the" will count as the same word.
+
+***********************************************************
+https://docs.oracle.com/javase/tutorial/collections/interfaces/set.html
+https://docs.oracle.com/javase/tutorial/essential/io/file.html
