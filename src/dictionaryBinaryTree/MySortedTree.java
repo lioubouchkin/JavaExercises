@@ -5,15 +5,15 @@ import java.util.Stack;
 
 import javax.swing.tree.MutableTreeNode;
 
-public class MySortedTree implements Iterable<String> {
-	private MyTreeNode root;
-	private long allElements = 0;
+public class MySortedTree<T extends Comparable> implements Iterable<T> {
+	private MyTreeNode 	root;
+	private long 		allElements = 0;
 	
 	public MySortedTree() {
 		super();
 	}
 	
-	public void insert (String value) {		// the list is empty
+	public void insert (T value) {		// the list is empty
 		if ( this.root == null ) {
 			this.root = new MyTreeNode(value);
 			++ this.allElements;
@@ -103,17 +103,17 @@ public class MySortedTree implements Iterable<String> {
 	}
 	
 	@Override
-	public Iterator<String> iterator() {
+	public Iterator<T> iterator() {
 		return new MyTreeIterator(this.root);
 	}
 	
-	static class MyTreeNode implements Comparable<MyTreeNode>{
+	static class MyTreeNode<T extends Comparable> implements Comparable<MyTreeNode>{
 		private MyTreeNode 	leftChild;
 		private MyTreeNode 	rightChild;
 		private MyTreeNode 	parent;
-		private String 		item;
+		private T 			item;
 		
-		public MyTreeNode(String item) {
+		public MyTreeNode(T item) {
 			this.item = item;
 		}
 
@@ -132,11 +132,11 @@ public class MySortedTree implements Iterable<String> {
 		
 		@Override
 		public String toString() {
-			return this.item;
+			return this.item.toString();
 		}
 	}
 	
-	private class MyTreeIterator implements Iterator<String> {
+	private class MyTreeIterator<K extends Comparable<K>> implements Iterator<K> {
 		private MyTreeNode next;
 		/* stack is loaded the next way starting from the utmost left down (the smallest) element:
 		 * while (right child) 
@@ -150,6 +150,10 @@ public class MySortedTree implements Iterable<String> {
 		 * end else 		
 		 */
 		Stack<MyTreeNode> pile = new Stack<MyTreeNode>();
+		
+		public MyTreeIterator() {
+			this.iterateToFirst(root);
+		}
 		
 		public MyTreeIterator(MyTreeNode root) {
 			this.iterateToFirst(root);
@@ -178,7 +182,7 @@ public class MySortedTree implements Iterable<String> {
 		}
 		
 		@Override
-		public String next() {
+		public K next() {
 			MyTreeNode current;
 			MyTreeNode next;
 			if ( this.hasNext() ) {
@@ -192,7 +196,7 @@ public class MySortedTree implements Iterable<String> {
 						pile.push(next);
 					}
 				}
-				return next.item;
+				return (K)next.item;
 			}
 			return null;
 		}
