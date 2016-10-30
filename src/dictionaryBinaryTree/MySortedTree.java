@@ -3,10 +3,8 @@ package dictionaryBinaryTree;
 import java.util.Iterator;
 import java.util.Stack;
 
-import javax.swing.tree.MutableTreeNode;
-
-public class MySortedTree<T extends Comparable> implements Iterable<T> {
-	private MyTreeNode 	root;
+public class MySortedTree<T extends Comparable<T>> {
+	private MyTreeNode<T> 	root;
 	private long 		allElements = 0;
 	
 	public MySortedTree() {
@@ -15,18 +13,18 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 	
 	public void insert (T value) {		// the list is empty
 		if ( this.root == null ) {
-			this.root = new MyTreeNode(value);
+			this.root = new MyTreeNode<T>(value);
 			++ this.allElements;
 			return;
 		}
 		// runs down the tree to find the place for a new item,
 		//	starts form the root item.
-		MyTreeNode runner = this.root;
+		MyTreeNode<T> runner = this.root;
 		while ( true ) {
 			// the value is to be placed on the left of the compared node
 			if ( value.compareTo(runner.item) < 0 ) {
 				if ( runner.leftChild == null ) {
-					runner.leftChild = new MyTreeNode(value);
+					runner.leftChild = new MyTreeNode<T>(value);
 					runner.leftChild.parent = runner;
 					++ this.allElements;
 					return;
@@ -37,7 +35,7 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 			// the value is to be placed on the right of the compared node
 			if ( value.compareTo(runner.item) > 0 ) {
 				if ( runner.rightChild == null ) {
-					runner.rightChild = new MyTreeNode(value);
+					runner.rightChild = new MyTreeNode<T>(value);
 					runner.rightChild.parent = runner;
 					++ this.allElements;
 					return;
@@ -59,7 +57,7 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 	}
 	
 	// inorder nodes traversal: left child first, then root node, then right child 
-	private void printInorder( MyTreeNode node ) {
+	private void printInorder( MyTreeNode<T> node ) {
 		if ( node.leftChild != null ) {
 			this.printInorder( node.leftChild );
 		}
@@ -80,14 +78,14 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
     * grandchildren of the root, and so on.)
     */
 	public void printLevelOrder() {
-		MyTreeNode 	treeNode;
-		MyQueue 	queque;
+		MyTreeNode<T> 	treeNode;
+		MyQueue<T> 	queque;
 		int			level = 0;
 		// the collection is empty
 		if ( this.root == null ) {
 			throw new IllegalStateException("Cannot perform print operation on an empty collection");
 		}
-		queque = new MyQueue();
+		queque = new MyQueue<T>();
 		queque.enqueue(root);
 		while ( !queque.isEmpty() ) {
 			treeNode = queque.dequeue();
@@ -102,30 +100,34 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 		}
 	}
 	
-	@Override
+//	@Override
 	public Iterator<T> iterator() {
 		return new MyTreeIterator(this.root);
 	}
 	
-	static class MyTreeNode<T extends Comparable> implements Comparable<MyTreeNode>{
-		private MyTreeNode 	leftChild;
-		private MyTreeNode 	rightChild;
-		private MyTreeNode 	parent;
-		private T 			item;
+	static class MyTreeNode<T extends Comparable<T>> implements Comparable<MyTreeNode<T>>{
+		private MyTreeNode<T> 	leftChild;
+		private MyTreeNode<T> 	rightChild;
+		private MyTreeNode<T> 	parent;
+		private T 				item;
 		
 		public MyTreeNode(T item) {
 			this.item = item;
 		}
 
 		@Override
-		public int compareTo(MyTreeNode node) {
+		public int compareTo(MyTreeNode<T> node) {
 			return this.item.compareTo(node.item);
 		}
 		@Override
 		public boolean equals(Object obj) {
-			if ( obj.getClass().getName() == MyTreeNode.class.getName() ){
-				MyTreeNode node = (MyTreeNode) obj;
-				return this.item.compareTo(node.item) == 0 ;
+			if ( obj instanceof MyTreeNode<?> ) {
+//			if ( obj.getClass().getName() == MyTreeNode.class.getName() ){
+//				MyTreeNode<?> node = (MyTreeNode<?>) obj;
+				if ( ((MyTreeNode<?>)obj).item.equals(this.item) ) {
+					return true;	
+				}
+//				return this.item.compareTo(node.item) == 0 ;
 			}
 			return false;
 		}
@@ -136,8 +138,8 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 		}
 	}
 	
-	private class MyTreeIterator<K extends Comparable<K>> implements Iterator<K> {
-		private MyTreeNode next;
+	private class MyTreeIterator implements Iterator<T> {
+		private T next;
 		/* stack is loaded the next way starting from the utmost left down (the smallest) element:
 		 * while (right child) 
 		 * 		then if(left child)
@@ -149,18 +151,18 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 		 * 		then parent
 		 * end else 		
 		 */
-		Stack<MyTreeNode> pile = new Stack<MyTreeNode>();
+		Stack<MyTreeNode<T>> pile = new Stack<MyTreeNode<T>>();
 		
 		public MyTreeIterator() {
 			this.iterateToFirst(root);
 		}
 		
-		public MyTreeIterator(MyTreeNode root) {
+		public MyTreeIterator(MyTreeNode<T> root) {
 			this.iterateToFirst(root);
 		}
 		
 		// load the right branch to the stack : beginning from the root ending at the smallest element
-		private void iterateToFirst( MyTreeNode root) {
+		private void iterateToFirst( MyTreeNode<T> root) {
 			// in case of an empty TreeList
 			if ( root == null ) {
 				return;
@@ -178,13 +180,13 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 		//		the next element is the first element;
 		@Override
 		public boolean hasNext() {
-			return this.pile.empty();
+			return !this.pile.empty();
 		}
 		
 		@Override
-		public K next() {
-			MyTreeNode current;
-			MyTreeNode next;
+		public T next() {
+			MyTreeNode<T> current;
+			MyTreeNode<T> next;
 			if ( this.hasNext() ) {
 				current = this.pile.pop();
 				next = current.rightChild;
@@ -196,7 +198,8 @@ public class MySortedTree<T extends Comparable> implements Iterable<T> {
 						pile.push(next);
 					}
 				}
-				return (K)next.item;
+//				return (T)next.item;
+				return current.item;
 			}
 			return null;
 		}

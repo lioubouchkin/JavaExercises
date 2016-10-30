@@ -13,9 +13,9 @@ public class BinaryDictionary {
 	
 	public static void main(String[] args) {
 		try {
-//			MySortedTree<String> sortedWords = mySortedTreeTest_initialise();
+			MySortedTree<String> sortedWords = mySortedTreeTest_initialise();
 //			sortedWords.printInorder();
-//			mySortedTreeTest_iterate(sortedWords);
+			mySortedTreeTest_iterate(sortedWords);
 //			MyQueue q = new MyQueue();
 //			myQueueTest_enqueu(q);
 //			myQueueTest_dequeu(q);
@@ -34,7 +34,7 @@ public class BinaryDictionary {
 		MySortedTree<Integer> numbers = new MySortedTree<Integer>();
 		Random r = new Random();
 		while ( numbers.count()<1024) {
-			numbers.insert( r.nextInt(100000) );
+			numbers.insert( r.nextInt(10000) );
 		}
 		return numbers;
 	} 
@@ -54,7 +54,7 @@ public class BinaryDictionary {
 		BufferedReader br;
 		String[] words;
 		MySortedTree<String> sortedWords = new MySortedTree<String>();
-		br = DataSource.readTextFromFile(Constants.DIRECTORY, Constants.WORDS_INFILE);
+		br = DataSource.readTextFromFile(Constants.DIRECTORY, Constants.WORDS_INPUT_FILE);
 		words =  DataSource.getWordsFromReader(br);
 		DataSource.closeSources();
 		sortedWords = insertInTree(words, sortedWords);
@@ -70,17 +70,19 @@ public class BinaryDictionary {
 		return sortedWords;
 	}
 	
-	private static <T extends Comparable> void mySortedTreeTest_iterate( MySortedTree<T> myTree ) throws Exception {
+	private static <T extends Comparable<T>> void mySortedTreeTest_iterate( MySortedTree<T> myTree ) throws Exception {
 		Iterator<T> wordIterator = myTree.iterator();
 		while (wordIterator.hasNext()) {
 			System.out.println(wordIterator.next());
 		}
+//		System.out.println(wordIterator.hasNext());
+//		System.out.println(wordIterator.next());
 //		for ( Comparable c : myTree ) {
 //			System.out.println(c);
 //		}
 	}
 	
-	private static void myQueueTest_enqueu( MyQueue q ) {
+	private static void myQueueTest_enqueu( MyQueue<String> q ) {
 		MyTreeNode<String> n1 = new MyTreeNode<String>("one");
 		MyTreeNode<String> n2 = new MyTreeNode<String>("two");
 		MyTreeNode<String> n3 = new MyTreeNode<String>("three");
@@ -89,7 +91,7 @@ public class BinaryDictionary {
 		q.enqueue(n3);
 	}
 	
-	private static void myQueueTest_dequeu( MyQueue q ) {
+	private static void myQueueTest_dequeu( MyQueue<String> q ) {
 		q.dequeue();
 		q.dequeue();
 		q.dequeue();
