@@ -13,9 +13,9 @@ public class BinaryDictionary {
 	
 	public static void main(String[] args) {
 		try {
-//			MySortedTree<String> sortedWords = mySortedTreeTest_initialise();
+			MySortedTree<String> sortedWords = mySortedTreeTest_initialise();
 //			sortedWords.printInorder();
-//			mySortedTreeTest_iterate(sortedWords);
+			mySortedTreeTest_iterate(sortedWords);
 //			MyQueue q = new MyQueue();
 //			myQueueTest_enqueu(q);
 //			myQueueTest_dequeu(q);
@@ -25,20 +25,6 @@ public class BinaryDictionary {
 			numbers = insertRandomInts();
 			System.out.println(numbers.count());
 			mySortedTreeTest_iterate(numbers);
-			
-			/*****************************
-			 *  Exercise 9.5:
-			 *  TestBinaryTreeBalance
-			 ****************************/
-			int countLeaves = numbers.countLeaves();
-			int depthOfAllLeaves = numbers.depthOfAllLeaves();
-			int maxDepth = numbers.maxDepth();
-			System.out.println("countLeaves : "+countLeaves);
-			System.out.println("depthOfAllLeaves : "+depthOfAllLeaves);
-			System.out.println("maxDepth : "+maxDepth);
-			System.out.println("the average depth : "+ (depthOfAllLeaves/countLeaves));
-			/**************9.5***************/
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,7 +33,7 @@ public class BinaryDictionary {
 	private static MySortedTree<Integer> insertRandomInts () {
 		MySortedTree<Integer> numbers = new MySortedTree<Integer>();
 		Random r = new Random();
-		while ( numbers.count()<1023) {
+		while ( numbers.count()<1024) {
 			numbers.insert( r.nextInt(10000) );
 		}
 		return numbers;
