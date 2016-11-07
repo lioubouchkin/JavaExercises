@@ -5,7 +5,8 @@ import java.util.Stack;
 
 public class MySortedTree<T extends Comparable<T>> {
 	private MyTreeNode<T> 	root;
-	private long 		allElements = 0;
+	private long 			allElements = 0;
+	private int 			depthOfAllLeaves;
 	
 	public MySortedTree() {
 		super();
@@ -80,7 +81,6 @@ public class MySortedTree<T extends Comparable<T>> {
 	public void printLevelOrder() {
 		MyTreeNode<T> 	treeNode;
 		MyQueue<T> 	queque;
-		int			level = 0;
 		// the collection is empty
 		if ( this.root == null ) {
 			throw new IllegalStateException("Cannot perform print operation on an empty collection");
@@ -96,8 +96,102 @@ public class MySortedTree<T extends Comparable<T>> {
 			if ( treeNode.leftChild != null ) {
 				queque.enqueue(treeNode.leftChild);
 			}
-			++ level;
 		}
+	}
+	
+	/**
+	 * Count leaves(nodes without children) in this MySortedTree object
+	 * @return		number of found leaves;
+	 */
+	public int countLeaves () {
+		if ( this.root == null ) {
+			return 0;
+		}
+		int result = countLeaves(this.root, 0);
+		return result;
+	}
+	
+	/**
+	 * Count leaves(nodes without children) in this MySortedTree object
+	 * @param node		MyTreeNode to examine;
+	 * @param result	leaves found so far;
+	 * @return			number of found leaves;
+	 */
+	private int countLeaves (MyTreeNode<T> node, int result) {
+		if ( node.leftChild != null ) {
+			result = countLeaves( node.leftChild, result );
+		}
+		if ( node.rightChild != null ) {
+			result = countLeaves( node.rightChild, result );
+		}
+		if ( node.leftChild == null && node.rightChild == null ) {
+			++ result;
+		}
+		return result;
+	}
+	
+	/**
+	 * Calculates the sum of depths of all the leaves.
+	 * @return	the sum of depths of all the leaves.
+	 */
+	public int depthOfAllLeaves() {
+		if ( this.root == null ) {
+			return 0;
+		}
+		this.depthOfAllLeaves = 0;
+		this.depthOfAllLeaves(this.root, 0);
+		return this.depthOfAllLeaves;
+	}
+	
+	/**
+	 * Calculates the sum of depths of all the leaves.
+	 * @param node		MyTreeNode to examine
+	 * @param result	depth calculated so far
+	 */
+	private void depthOfAllLeaves (MyTreeNode<T> node, int result) {
+		++result;
+		if ( node.leftChild != null ) {
+			depthOfAllLeaves( node.leftChild, result );
+		}
+		if ( node.rightChild != null ) {
+			depthOfAllLeaves( node.rightChild, result );
+		}
+		if ( node.leftChild == null && node.rightChild == null ) {
+			this.depthOfAllLeaves += result;
+//			System.out.println(node.item+":"+result);
+		}
+	}
+	
+	/**
+	 * Calculates the maximum depth of this MySortedTree object
+	 * @return	the maximum depth value of this MySortedTree object
+	 */
+	public int maxDepth() {
+		if ( this.root == null ) {
+			return 0;
+		}
+		return this.maxDepth(this.root, 0, 0);
+	}
+	
+	/**
+	 * Calculates the maximum depth of this MySortedTree object
+	 * @param node					MyTreeNode to examine
+	 * @param currentNodeDepth		the depth of the current MyTreeNode
+	 * @param maxDepth				the max depth found so far
+	 * @return						the maximum value of maxDepth and the value calculated by the function
+	 */
+	public int maxDepth(MyTreeNode<T> node, int currentNodeDepth, int maxDepth) {
+		++currentNodeDepth;
+		if ( node.leftChild != null ) {
+			maxDepth = maxDepth( node.leftChild, currentNodeDepth, maxDepth );
+		}
+		if ( node.rightChild != null ) {
+			maxDepth = maxDepth( node.rightChild, currentNodeDepth, maxDepth );
+		}
+		if ( node.leftChild == null && node.rightChild == null ) {
+			return maxDepth>currentNodeDepth ? maxDepth : currentNodeDepth;
+		}
+		return maxDepth;
 	}
 	
 //	@Override
@@ -195,7 +289,6 @@ public class MySortedTree<T extends Comparable<T>> {
 						pile.push(next);
 					}
 				}
-//				return (T)next.item;
 				return current.item;
 			}
 			return null;

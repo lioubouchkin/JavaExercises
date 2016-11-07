@@ -1,4 +1,3 @@
-
 package dictionaryBinaryTree;
 
 import dictionaryBinaryTree.MySortedTree.MyTreeNode;
