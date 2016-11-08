@@ -7,4 +7,4 @@ class ListNode {
 
 Write a method that will make a copy of a list, with the order of the items of the list reversed.
 The method should have a parameter of type ListNode, and it should return a value of type ListNode. 
-The original list should not be modified
+The original list should not be modified.
