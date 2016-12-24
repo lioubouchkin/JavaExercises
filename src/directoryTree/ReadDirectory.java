@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class ReadDirectory {
 	
-	private static final String HOME_DIRECTORY = "C:\\Users\\A0707220\\Documents";
+	private static final String HOME_DIRECTORY = "E:\\MyDocs\\temp";
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		ReadDirectory rd = new ReadDirectory();

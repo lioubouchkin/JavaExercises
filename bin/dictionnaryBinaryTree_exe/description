@@ -1,0 +1,8 @@
+Should compute and output the average depth of all the leaves in the tree
+and the maximum depth of all the leaves. To do this, you will need three recursive subroutines:
+	- one to count the leaves,
+	- one to find the sum of the depths of all the leaves,
+	- and one to find the maximum depth.
+The latter two subroutines should have an int-valued parameter, depth, that tells how deep in the tree you've gone.
+When you call this routine from the main program, the depth parameter is 0;
+when you call the routine recursively, the parameter increases by 1.
